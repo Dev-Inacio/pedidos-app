@@ -12,8 +12,8 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @ToString
+@AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Produto {
 

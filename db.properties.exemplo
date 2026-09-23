@@ -1,0 +1,4 @@
+user=seu_usuario_mysql
+password=sua_senha_mysql
+dburl=jdbc:mysql://localhost:3306/gestao_financeira
+useSSL=false
