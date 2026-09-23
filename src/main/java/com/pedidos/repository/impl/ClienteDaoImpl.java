@@ -125,12 +125,16 @@ public class ClienteDaoImpl implements ClienteDao {
         try {
             preparedStatement = connection.prepareStatement("UPDATE cliente SET nome= ?,email =?, telefone =? WHERE id =?");
 
-            preparedStatement.setInt(1,cliente.getId());
-            preparedStatement.setString(2, cliente.getNome());
-            preparedStatement.setString(3, cliente.getEmail());
-            preparedStatement.setString(4, cliente.getTelefone());
+            preparedStatement.setString(1, cliente.getNome());
+            preparedStatement.setString(2, cliente.getEmail());
+            preparedStatement.setString(3, cliente.getTelefone());
+            preparedStatement.setInt(4,cliente.getId());
 
-            preparedStatement.executeUpdate();
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+            } else {
+                throw new ConexaoException("");
+            }
         } catch (SQLException exception) {
             throw new ConexaoException(exception.getMessage());
         }finally {
@@ -146,7 +150,12 @@ public class ClienteDaoImpl implements ClienteDao {
             preparedStatement = connection.prepareStatement("DELETE FROM cliente WHERE id = ?");
 
             preparedStatement.setInt(1, id);
-            preparedStatement.executeUpdate();
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+            } else {
+                throw new ConexaoException("");
+            }
         } catch (SQLException exception) {
             throw new ConexaoException(exception.getMessage());
         } finally {

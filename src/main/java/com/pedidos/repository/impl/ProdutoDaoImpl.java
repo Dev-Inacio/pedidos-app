@@ -80,9 +80,9 @@ public class ProdutoDaoImpl implements ProdutoDao {
                 return produto;
             }
             return null;
-        }catch (SQLException exception){
+        } catch (SQLException exception) {
             throw new ConexaoException(exception.getMessage());
-        }finally {
+        } finally {
             ConexaoDB.closeStatement(preparedStatement);
             ConexaoDB.closeResultSet(resultSet);
         }
@@ -90,11 +90,46 @@ public class ProdutoDaoImpl implements ProdutoDao {
 
     @Override
     public Produto atualizarEstoque(int produtoId, int quantidade) {
-        return null;
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement("UPDATE produto SET quantidade_em_estoque = quantidade_em_estoque + ? WHERE id = ?");
+
+            preparedStatement.setInt(1, quantidade);
+            preparedStatement.setInt(2, produtoId);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+            } else {
+                throw new ConexaoException("");
+            }
+        }catch (SQLException exception){
+            throw new ConexaoException(exception.getMessage());
+        }finally {
+            ConexaoDB.closeStatement(preparedStatement);
+        }
+        return buscarPorId(produtoId);
     }
 
     @Override
     public void deletar(int id) {
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement("DELETE  FROM produto WHERE id = ?");
 
+            preparedStatement.setInt(1, id);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+
+            } else {
+                throw new ConexaoException("");
+            }
+
+        } catch (SQLException exception) {
+            throw new ConexaoException(exception.getMessage());
+        } finally {
+            ConexaoDB.closeStatement(preparedStatement);
+        }
     }
 }
