@@ -22,7 +22,7 @@ public class GerenciadorTransacao {
             } catch (SQLException e2) {
                 exception.addSuppressed(e2);
             }
-            throw new ConexaoException("");
+            throw new ConexaoException(exception.getMessage());
         } finally {
             try {
                 connection.setAutoCommit(true);

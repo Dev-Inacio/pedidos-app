@@ -1,6 +1,5 @@
 package com.pedidos.service;
 
-import com.pedidos.enums.StatusPedido;
 import com.pedidos.exception.ClienteNaoEncontradoException;
 import com.pedidos.exception.DadoInvalidoException;
 import com.pedidos.exception.EmailJaCadastradoException;
