@@ -89,4 +89,27 @@ public class ItemPedidoDaoImpl implements ItemPedidoDao {
             ConexaoDB.closeResultSet(resultSet);
         }
     }
+
+    @Override
+    public boolean existePorProduto(int produtoId) {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            preparedStatement = connection.prepareStatement("SELECT COUNT(*) FROM item_pedido WHERE produto_id = ?");
+            preparedStatement.setInt(1, produtoId);
+
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                int total = resultSet.getInt(1);
+                return total > 0;
+            }
+            return false;
+        } catch (SQLException exception) {
+            throw new ConexaoException(exception.getMessage());
+        } finally {
+            ConexaoDB.closeStatement(preparedStatement);
+            ConexaoDB.closeResultSet(resultSet);
+        }
+    }
 }

@@ -72,12 +72,10 @@ public class ClienteService {
 
     public void deletar(int id) {
         buscarPorId(id);
-        List<Pedido> pedido = pedidoDao.listarPorCliente(id);
+        List<Pedido> pedidoList = pedidoDao.listarPorCliente(id);
 
-        for (Pedido pedidoList : pedido){
-            if (pedidoList.getStatus() == StatusPedido.ABERTO){
-                throw new PedidoEmAndamentoException("");
-            }
+        if (!pedidoList.isEmpty()){
+            throw new PedidoEmAndamentoException("");
         }
         clienteDao.deletar(id);
     }

@@ -9,4 +9,6 @@ public interface ItemPedidoDao {
     ItemPedido salvar(ItemPedido item, int pedidoId);
 
     List<ItemPedido> buscarPorPedidoId(int pedidoId);
+
+    boolean existePorProduto(int produtoId);
 }

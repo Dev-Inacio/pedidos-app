@@ -2,8 +2,10 @@ package com.pedidos.service;
 
 import com.pedidos.exception.DadoInvalidoException;
 import com.pedidos.exception.EstoqueInsuficienteException;
+import com.pedidos.exception.ProdutoComPedidoVinculadoException;
 import com.pedidos.exception.ProdutoNaoEncontradoException;
 import com.pedidos.model.Produto;
+import com.pedidos.repository.ItemPedidoDao;
 import com.pedidos.repository.ProdutoDao;
 import com.pedidos.util.ValidadorUtil;
 import jakarta.validation.ConstraintViolation;
@@ -15,6 +17,7 @@ import java.util.Set;
 public class ProdutoService {
 
     private final ProdutoDao produtoDao;
+    private final ItemPedidoDao itemPedidoDao;
 
     public Produto cadastrar(Produto produto) {
 
@@ -46,6 +49,9 @@ public class ProdutoService {
 
     public void deletar(int id){
         buscarPorId(id);
+        if (itemPedidoDao.existePorProduto(id)){
+            throw new ProdutoComPedidoVinculadoException("")  ;
+        }
         produtoDao.deletar(id);
     }
 }
