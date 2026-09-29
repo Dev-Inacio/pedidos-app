@@ -38,7 +38,7 @@ public class ClienteService {
     public Cliente buscarPorId(int id) {
         Cliente cliente = clienteDao.buscarPorId(id);
         if (cliente == null) {
-            throw new ClienteNaoEncontradoException("");
+            throw new ClienteNaoEncontradoException("Cliente com id " + id + " não encontrado");
         }
         return cliente;
     }
@@ -46,7 +46,7 @@ public class ClienteService {
     public Cliente buscarPorEmail(String email) {
         Cliente cliente = clienteDao.buscarPorEmail(email);
         if (cliente == null) {
-            throw new ClienteNaoEncontradoException("");
+            throw new ClienteNaoEncontradoException("Cliente com email " + email + " não encontrado");
         }
         return cliente;
     }
@@ -54,7 +54,7 @@ public class ClienteService {
     public Cliente atualizar(Cliente cliente) {
         Set<ConstraintViolation<Cliente>> violacoes = ValidadorUtil.getValidator().validate(cliente);
         if (!violacoes.isEmpty()) {
-            throw new DadoInvalidoException("");
+            throw new DadoInvalidoException("Dados inválidos: " + violacoes.iterator().next().getMessage());
         }
 
         Cliente clienteExistente = buscarPorId(cliente.getId());
@@ -62,7 +62,7 @@ public class ClienteService {
         if (!cliente.getEmail().equalsIgnoreCase(clienteExistente.getEmail())) {
             Cliente outroCliente = clienteDao.buscarPorEmail(cliente.getEmail());
             if (outroCliente != null) {
-                throw new EmailJaCadastradoException("");
+                throw new EmailJaCadastradoException("Email já cadastrado: " + cliente.getEmail());
             }
         }
         clienteDao.atualizar(cliente);
@@ -74,7 +74,7 @@ public class ClienteService {
         List<Pedido> pedidoList = pedidoDao.listarPorCliente(id);
 
         if (!pedidoList.isEmpty()){
-            throw new PedidoEmAndamentoException("");
+            throw new PedidoEmAndamentoException("Cliente com id " + id + " possui pedidos vinculados");
         }
         clienteDao.deletar(id);
     }

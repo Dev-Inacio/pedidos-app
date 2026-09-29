@@ -33,7 +33,7 @@ public class PedidoService {
     private Pedido buscarPedidoOuFalhar(int pedidoId) {
         Pedido pedido = pedidoDao.buscarPorId(pedidoId);
         if (pedido == null) {
-            throw new PedidoNaoEncontradoException("");
+            throw new PedidoNaoEncontradoException("Pedido com id " + pedidoId + " não encontrado");
         }
         return pedido;
     }
@@ -47,13 +47,13 @@ public class PedidoService {
     public Pedido adicionarItem(int pedidoId, int produtoId, int quantidade) {
         Pedido pedido = buscarPedidoOuFalhar(pedidoId);
         if (pedido.getStatus() != StatusPedido.ABERTO) {
-            throw new PedidoEmAndamentoException("");
+            throw new PedidoEmAndamentoException("Pedido " + pedidoId + " não está aberto");
         }
         Produto produto = produtoService.buscarPorId(produtoId);
         ItemPedido itemPedido = new ItemPedido(produto, quantidade);
         Set<ConstraintViolation<ItemPedido>> violacoes = ValidadorUtil.getValidator().validate(itemPedido);
         if (!violacoes.isEmpty()) {
-            throw new DadoInvalidoException("");
+            throw new DadoInvalidoException("Dados inválidos: " + violacoes.iterator().next().getMessage());
         }
 
         gerenciadorTransacao.executarEmTransacao(() -> {
@@ -69,11 +69,11 @@ public class PedidoService {
         Pedido pedido = buscarPedidoOuFalhar(pedidoId);
 
         if (pedido.getStatus() != StatusPedido.ABERTO) {
-            throw new PedidoEmAndamentoException("");
+            throw new PedidoEmAndamentoException("Pedido " + pedidoId + " não está aberto");
         }
 
         if (pedido.getItens().isEmpty()) {
-            throw new PedidoSemItensException("");
+            throw new PedidoSemItensException("Pedido " + pedidoId + " não possui itens");
         }
 
         pedido.setStatus(StatusPedido.FECHADO);
@@ -85,7 +85,7 @@ public class PedidoService {
         Pedido pedido = buscarPedidoOuFalhar(pedidoId);
 
         if (pedido.getStatus() != StatusPedido.ABERTO) {
-            throw new PedidoEmAndamentoException("");
+            throw new PedidoEmAndamentoException("Pedido " + pedidoId + " não está aberto");
         }
 
         gerenciadorTransacao.executarEmTransacao(() -> {

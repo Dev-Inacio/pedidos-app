@@ -49,7 +49,7 @@ public class PedidoDaoImpl implements PedidoDao {
                 }
                 ConexaoDB.closeResultSet(resultSet);
             } else {
-                throw new ConexaoException("");
+                throw new ConexaoException("Falha ao salvar pedido — nenhuma linha afetada");
             }
         } catch (SQLException exception) {
             throw new ConexaoException(exception.getMessage());
@@ -106,7 +106,7 @@ public class PedidoDaoImpl implements PedidoDao {
             int rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected > 0) {
             } else {
-                throw new ConexaoException("");
+                throw new ConexaoException("Falha ao atualizar pedido com id " + pedido.getId() + " — nenhuma linha afetada");
             }
         } catch (SQLException exception) {
             throw new ConexaoException(exception.getMessage());

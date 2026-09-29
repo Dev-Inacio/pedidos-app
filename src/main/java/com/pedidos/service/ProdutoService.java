@@ -23,7 +23,7 @@ public class ProdutoService {
 
         Set<ConstraintViolation<Produto>> violacoes = ValidadorUtil.getValidator().validate(produto);
         if (!violacoes.isEmpty()) {
-            throw new DadoInvalidoException("");
+            throw new DadoInvalidoException("Dados inválidos: " + violacoes.iterator().next().getMessage());
         }
         return produtoDao.cadastrar(produto);
     }
@@ -31,7 +31,7 @@ public class ProdutoService {
     public Produto buscarPorId(int id) {
         Produto produto = produtoDao.buscarPorId(id);
         if (produto == null) {
-            throw new ProdutoNaoEncontradoException("");
+            throw new ProdutoNaoEncontradoException("Produto com id " + id + " não encontrado");
         }
         return produto;
     }
@@ -42,7 +42,7 @@ public class ProdutoService {
         int novaQuantidade = buscando.getQuantidadeEmEstoque() + quantidade;
 
         if (novaQuantidade < 0) {
-            throw new EstoqueInsuficienteException("");
+            throw new EstoqueInsuficienteException("Estoque insuficiente para o produto " + produtoId);
         }
         return produtoDao.atualizarEstoque(produtoId, quantidade);
     }
@@ -50,7 +50,7 @@ public class ProdutoService {
     public void deletar(int id){
         buscarPorId(id);
         if (itemPedidoDao.existePorProduto(id)){
-            throw new ProdutoComPedidoVinculadoException("")  ;
+            throw new ProdutoComPedidoVinculadoException("Produto com id " + id + " possui pedidos vinculados")  ;
         }
         produtoDao.deletar(id);
     }

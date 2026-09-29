@@ -42,7 +42,7 @@ public class ClienteDaoImpl implements ClienteDao {
                 }
                 ConexaoDB.closeResultSet(resultSet);
             } else {
-                throw new ConexaoException("");
+                throw new ConexaoException("Falha ao cadastrar cliente — nenhuma linha afetada");
             }
         } catch (SQLException exception) {
             throw new ConexaoException(exception.getMessage());
@@ -133,7 +133,7 @@ public class ClienteDaoImpl implements ClienteDao {
             int rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected > 0) {
             } else {
-                throw new ConexaoException("");
+                throw new ConexaoException("Falha ao atualizar cliente com id " + cliente.getId() + " — nenhuma linha afetada");
             }
         } catch (SQLException exception) {
             throw new ConexaoException(exception.getMessage());
@@ -154,7 +154,7 @@ public class ClienteDaoImpl implements ClienteDao {
             int rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected > 0) {
             } else {
-                throw new ConexaoException("");
+                throw new ConexaoException("Falha ao deletar cliente com id " + id + " — nenhuma linha afetada");
             }
         } catch (SQLException exception) {
             throw new ConexaoException(exception.getMessage());

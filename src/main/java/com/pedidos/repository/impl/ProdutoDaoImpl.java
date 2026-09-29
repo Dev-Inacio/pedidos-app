@@ -48,7 +48,7 @@ public class ProdutoDaoImpl implements ProdutoDao {
                 }
                 ConexaoDB.closeResultSet(resultSet);
             } else {
-                throw new ConexaoException("");
+                throw new ConexaoException("Falha ao cadastrar produto — nenhuma linha afetada");
             }
         } catch (SQLException exception) {
             throw new ConexaoException(exception.getMessage());
@@ -101,7 +101,7 @@ public class ProdutoDaoImpl implements ProdutoDao {
 
             if (rowsAffected > 0) {
             } else {
-                throw new ConexaoException("");
+                throw new ConexaoException("Falha ao atualizar estoque do produto com id " + produtoId + " — nenhuma linha afetada");
             }
         }catch (SQLException exception){
             throw new ConexaoException(exception.getMessage());
@@ -123,7 +123,7 @@ public class ProdutoDaoImpl implements ProdutoDao {
             if (rowsAffected > 0) {
 
             } else {
-                throw new ConexaoException("");
+                throw new ConexaoException("Falha ao deletar produto com id " + id + " — nenhuma linha afetada");
             }
 
         } catch (SQLException exception) {

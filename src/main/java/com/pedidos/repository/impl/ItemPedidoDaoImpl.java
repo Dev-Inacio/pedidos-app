@@ -50,7 +50,7 @@ public class ItemPedidoDaoImpl implements ItemPedidoDao {
                 }
                 ConexaoDB.closeResultSet(resultSet);
             } else {
-                throw new ConexaoException("");
+                throw new ConexaoException("Falha ao salvar item do pedido " + pedidoId + " — nenhuma linha afetada");
             }
         } catch (SQLException exception) {
             throw new ConexaoException(exception.getMessage());
