@@ -4,6 +4,7 @@ import com.pedidos.exception.ConexaoException;
 import com.pedidos.model.ItemPedido;
 import com.pedidos.model.Produto;
 import com.pedidos.repository.ItemPedidoDao;
+import com.pedidos.repository.ProdutoDao;
 import com.pedidos.util.ConexaoDB;
 import lombok.RequiredArgsConstructor;
 
@@ -19,6 +20,7 @@ import java.util.List;
 public class ItemPedidoDaoImpl implements ItemPedidoDao {
 
     private final Connection connection;
+    private final ProdutoDao produtoDao;
 
     @Override
     public ItemPedido salvar(ItemPedido itemPedido, int pedidoId) {
@@ -71,12 +73,11 @@ public class ItemPedidoDaoImpl implements ItemPedidoDao {
             resultSet = preparedStatement.executeQuery();
 
             List<ItemPedido> itens = new ArrayList<>();
-            ProdutoDaoImpl produtoDaoImpl = new ProdutoDaoImpl(this.connection);
 
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 int produtoId = resultSet.getInt("produto_id");
-                Produto produto = produtoDaoImpl.buscarPorId(produtoId);
+                Produto produto = produtoDao.buscarPorId(produtoId);
                 int quantidade = resultSet.getInt("quantidade");
                 double precoUnitarioNaCompra = resultSet.getDouble("preco_unitario_na_compra");
                 itens.add(new ItemPedido(id, produto, quantidade, precoUnitarioNaCompra));

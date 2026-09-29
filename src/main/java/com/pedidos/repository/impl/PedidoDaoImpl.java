@@ -5,6 +5,8 @@ import com.pedidos.exception.ConexaoException;
 import com.pedidos.model.Cliente;
 import com.pedidos.model.ItemPedido;
 import com.pedidos.model.Pedido;
+import com.pedidos.repository.ClienteDao;
+import com.pedidos.repository.ItemPedidoDao;
 import com.pedidos.repository.PedidoDao;
 import com.pedidos.util.ConexaoDB;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,8 @@ import java.util.List;
 public class PedidoDaoImpl implements PedidoDao {
 
     private final Connection connection;
+    private final ClienteDao clienteDao;
+    private final ItemPedidoDao itemPedidoDao;
 
 
     @Override
@@ -73,12 +77,11 @@ public class PedidoDaoImpl implements PedidoDao {
 
             if (resultSet.next()) {
 
-                Cliente cliente = new ClienteDaoImpl(this.connection).buscarPorId(resultSet.getInt("cliente_id"));
+                Cliente cliente = clienteDao.buscarPorId(resultSet.getInt("cliente_id"));
 
-                List<ItemPedido> itens = new ItemPedidoDaoImpl(this.connection).buscarPorPedidoId(pedidoId);
+                List<ItemPedido> itens = itemPedidoDao.buscarPorPedidoId(pedidoId);
 
                 StatusPedido statusPedido = StatusPedido.valueOf(resultSet.getString("status"));
-
 
                 LocalDateTime dataCriacao = resultSet.getTimestamp("data_criacao").toLocalDateTime();
 
@@ -128,14 +131,13 @@ public class PedidoDaoImpl implements PedidoDao {
             resultSet = preparedStatement.executeQuery();
 
             List<Pedido> pedidoList = new ArrayList<>();
+            Cliente cliente = clienteDao.buscarPorId(clienteId);
 
-            while (resultSet.next()){
+            while (resultSet.next()) {
 
                 int id = resultSet.getInt("id");
 
-                Cliente cliente = new ClienteDaoImpl(this.connection).buscarPorId(resultSet.getInt("cliente_id"));
-
-                List<ItemPedido> itens = new ItemPedidoDaoImpl(this.connection).buscarPorPedidoId(id);
+                List<ItemPedido> itens = itemPedidoDao.buscarPorPedidoId(id);
 
                 StatusPedido statusPedido = StatusPedido.valueOf(resultSet.getString("status"));
 
@@ -145,9 +147,9 @@ public class PedidoDaoImpl implements PedidoDao {
                 pedidoList.add(pedido);
             }
             return pedidoList;
-        }catch (SQLException exception){
+        } catch (SQLException exception) {
             throw new ConexaoException(exception.getMessage());
-        }finally {
+        } finally {
             ConexaoDB.closeStatement(preparedStatement);
             ConexaoDB.closeResultSet(resultSet);
         }
