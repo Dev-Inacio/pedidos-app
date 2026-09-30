@@ -205,7 +205,9 @@ public class Main {
                         System.out.println("✖ Opção inválida.");
                 }
             } catch (RuntimeException exception) {
-                System.out.println("✖ Erro: " + exception.getMessage());
+                System.out.println(" ✖ Erro: " + exception.getMessage());
+                System.out.println("Pressione Enter para continuar...");
+                scanner.nextLine();
             }
         } while (!opcaoCliente.equals("0"));
     }
@@ -346,7 +348,9 @@ public class Main {
                         System.out.println("✖ Opção inválida.");
                 }
             } catch (RuntimeException exception) {
-                System.out.println("✖ Erro: " + exception.getMessage());
+                System.out.println(" ✖ Erro: " + exception.getMessage());
+                System.out.println("Pressione Enter para continuar...");
+                scanner.nextLine();
             }
         } while (!opcaoProduto.equals("0"));
     }
@@ -468,7 +472,9 @@ public class Main {
                         System.out.println("✖ Opção inválida.");
                 }
             } catch (RuntimeException exception) {
-                System.out.println("✖ Erro: " + exception.getMessage());
+                System.out.println(" ✖ Erro: " + exception.getMessage());
+                System.out.println("Pressione Enter para continuar...");
+                scanner.nextLine();
             }
         } while (!opcaoPedido.equals("0"));
     }
