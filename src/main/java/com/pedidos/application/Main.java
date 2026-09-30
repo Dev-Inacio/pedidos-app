@@ -1,6 +1,7 @@
 package com.pedidos.application;
 
 import com.pedidos.model.Cliente;
+import com.pedidos.model.Pedido;
 import com.pedidos.model.Produto;
 import com.pedidos.repository.ClienteDao;
 import com.pedidos.repository.ItemPedidoDao;
@@ -22,6 +23,7 @@ import org.jline.utils.InfoCmp.Capability;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -70,7 +72,7 @@ public class Main {
                     menuProduto(scanner, terminal, produtoService);
                     break;
                 case "3":
-                    menuPedido();
+                    menuPedido(scanner, terminal, pedidoService);
                     break;
                 case "0":
                     System.out.println("Até logo! 👋");
@@ -350,7 +352,124 @@ public class Main {
     }
 
     private static void menuPedido(Scanner scanner, Terminal terminal, PedidoService pedidoService) {
+        String opcaoPedido;
+        do {
 
+            terminal.puts(Capability.clear_screen);
+            terminal.flush();
 
+            String cabecalhoPedido = "🧾 Pedido" + " ".repeat(18);
+            System.out.println(FormatadorMenu.linha(cabecalhoPedido));
+            System.out.println(cabecalhoPedido);
+            System.out.println(FormatadorMenu.linha(cabecalhoPedido));
+            System.out.println("[1] → Criar Pedido:");
+            System.out.println("[2] → Adicionar Item:");
+            System.out.println("[3] → Buscar por Id:");
+            System.out.println("[4] → Fechar Pedido:");
+            System.out.println("[5] → Cancelar Pedido:");
+            System.out.println("[6] → Listar por Cliente:");
+            System.out.println("[0] → Voltar:");
+            System.out.println("\n" + FormatadorMenu.linha(cabecalhoPedido));
+            System.out.print(" → Opção: ");
+            opcaoPedido = scanner.nextLine();
+
+            try {
+                switch (opcaoPedido) {
+                    case "1":
+                        System.out.print("Id do Cliente → ");
+                        int idClienteCriar = Integer.parseInt(scanner.nextLine());
+                        Pedido pedidoCriado = pedidoService.criarPedido(idClienteCriar);
+
+                        terminal.puts(Capability.clear_screen);
+                        terminal.flush();
+                        System.out.println(pedidoCriado);
+                        System.out.println("✔ Pedido criado com sucesso.");
+                        System.out.println("Pressione Enter para continuar...");
+                        scanner.nextLine();
+                        break;
+
+                    case "2":
+                        System.out.print("Id do Pedido → ");
+                        int idPedidoItem = Integer.parseInt(scanner.nextLine());
+                        System.out.print("Id do Produto → ");
+                        int idProdutoItem = Integer.parseInt(scanner.nextLine());
+                        System.out.print("Quantidade → ");
+                        int quantidadeItem = Integer.parseInt(scanner.nextLine());
+                        Pedido pedidoComItem = pedidoService.adicionarItem(idPedidoItem, idProdutoItem, quantidadeItem);
+
+                        terminal.puts(Capability.clear_screen);
+                        terminal.flush();
+                        System.out.println(pedidoComItem);
+                        System.out.println("✔ Item adicionado com sucesso.");
+                        System.out.println("Pressione Enter para continuar...");
+                        scanner.nextLine();
+                        break;
+
+                    case "3":
+                        System.out.print("Id → ");
+                        int idBuscarPedido = Integer.parseInt(scanner.nextLine());
+                        Pedido pedidoEncontrado = pedidoService.buscarPorId(idBuscarPedido);
+
+                        terminal.puts(Capability.clear_screen);
+                        terminal.flush();
+                        System.out.println(pedidoEncontrado);
+                        System.out.println("Pressione Enter para continuar...");
+                        scanner.nextLine();
+                        break;
+
+                    case "4":
+                        System.out.print("Id do Pedido → ");
+                        int idFecharPedido = Integer.parseInt(scanner.nextLine());
+                        Pedido pedidoFechado = pedidoService.fecharPedido(idFecharPedido);
+
+                        terminal.puts(Capability.clear_screen);
+                        terminal.flush();
+                        System.out.println(pedidoFechado);
+                        System.out.println("✔ Pedido fechado com sucesso.");
+                        System.out.println("Pressione Enter para continuar...");
+                        scanner.nextLine();
+                        break;
+
+                    case "5":
+                        System.out.print("Id do Pedido → ");
+                        int idCancelarPedido = Integer.parseInt(scanner.nextLine());
+                        Pedido pedidoCancelado = pedidoService.cancelarPedido(idCancelarPedido);
+
+                        terminal.puts(Capability.clear_screen);
+                        terminal.flush();
+                        System.out.println(pedidoCancelado);
+                        System.out.println("✔ Pedido cancelado com sucesso.");
+                        System.out.println("Pressione Enter para continuar...");
+                        scanner.nextLine();
+                        break;
+
+                    case "6":
+                        System.out.print("Id do Cliente → ");
+                        int idClienteListar = Integer.parseInt(scanner.nextLine());
+                        List<Pedido> pedidosDoCliente = pedidoService.listarPorCliente(idClienteListar);
+
+                        terminal.puts(Capability.clear_screen);
+                        terminal.flush();
+                        if (pedidosDoCliente.isEmpty()) {
+                            System.out.println("Nenhum pedido encontrado para esse cliente.");
+                        } else {
+                            for (Pedido pedido : pedidosDoCliente) {
+                                System.out.println(pedido);
+                            }
+                        }
+                        System.out.println("Pressione Enter para continuar...");
+                        scanner.nextLine();
+                        break;
+
+                    case "0":
+                        break;
+
+                    default:
+                        System.out.println("✖ Opção inválida.");
+                }
+            } catch (RuntimeException exception) {
+                System.out.println("✖ Erro: " + exception.getMessage());
+            }
+        } while (!opcaoPedido.equals("0"));
     }
 }

@@ -30,7 +30,7 @@ public class PedidoService {
     private final ItemPedidoDao itemPedidoDao;
     private final GerenciadorTransacao gerenciadorTransacao;
 
-    private Pedido buscarPedidoOuFalhar(int pedidoId) {
+    public Pedido buscarPorId(int pedidoId) {
         Pedido pedido = pedidoDao.buscarPorId(pedidoId);
         if (pedido == null) {
             throw new PedidoNaoEncontradoException("Pedido com id " + pedidoId + " não encontrado");
@@ -45,7 +45,7 @@ public class PedidoService {
     }
 
     public Pedido adicionarItem(int pedidoId, int produtoId, int quantidade) {
-        Pedido pedido = buscarPedidoOuFalhar(pedidoId);
+        Pedido pedido = buscarPorId(pedidoId);
         if (pedido.getStatus() != StatusPedido.ABERTO) {
             throw new PedidoEmAndamentoException("Pedido " + pedidoId + " não está aberto");
         }
@@ -66,7 +66,7 @@ public class PedidoService {
     }
 
     public Pedido fecharPedido(int pedidoId) {
-        Pedido pedido = buscarPedidoOuFalhar(pedidoId);
+        Pedido pedido = buscarPorId(pedidoId);
 
         if (pedido.getStatus() != StatusPedido.ABERTO) {
             throw new PedidoEmAndamentoException("Pedido " + pedidoId + " não está aberto");
@@ -82,7 +82,7 @@ public class PedidoService {
 
     public Pedido cancelarPedido(int pedidoId) {
 
-        Pedido pedido = buscarPedidoOuFalhar(pedidoId);
+        Pedido pedido = buscarPorId(pedidoId);
 
         if (pedido.getStatus() != StatusPedido.ABERTO) {
             throw new PedidoEmAndamentoException("Pedido " + pedidoId + " não está aberto");

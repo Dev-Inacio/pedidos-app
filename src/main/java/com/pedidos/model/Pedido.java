@@ -12,6 +12,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,5 +59,23 @@ public class Pedido {
             total+=item.calcularSubtotal();
         }
         return total;
+    }
+
+    @Override
+    public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("Pedido #%d | Cliente: %s | Status: %s | Data: %s%n",
+                id, cliente.getNome(), status, dataCriacao.format(formatter)));
+
+        if (itens.isEmpty()) {
+            sb.append("  (sem itens)");
+        } else {
+            for (ItemPedido item : itens) {
+                sb.append(item).append(System.lineSeparator());
+            }
+            sb.append(String.format("Total: R$ %.2f", calcularTotal()));
+        }
+        return sb.toString();
     }
 }

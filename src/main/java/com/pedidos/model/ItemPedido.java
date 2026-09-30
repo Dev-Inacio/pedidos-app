@@ -37,4 +37,9 @@ public class ItemPedido {
     public double calcularSubtotal(){
         return quantidade * precoUnitarioNaCompra;
     }
+
+    @Override
+    public String toString() {
+        return String.format("  - %s x%d = R$ %.2f", produto.getNome(), quantidade, calcularSubtotal());
+    }
 }

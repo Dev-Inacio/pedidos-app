@@ -35,4 +35,9 @@ public class Cliente {
         this.email = email;
         this.telefone = telefone;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Cliente #%d | Nome: %s | Email: %s | Telefone: %s", id, nome, email, telefone);
+    }
 }

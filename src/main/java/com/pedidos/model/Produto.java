@@ -36,4 +36,9 @@ public class Produto {
         this.preco = preco;
         this.quantidadeEmEstoque = quantidadeEmEstoque;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Produto #%d | Nome: %s | Preço: R$ %.2f | Estoque: %d", id, nome, preco, quantidadeEmEstoque);
+    }
 }
