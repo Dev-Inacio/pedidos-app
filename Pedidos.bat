@@ -1,0 +1,1 @@
+wt cmd /k "cd /d "C:\Users\xrl8i\IdeaProjects\EXERCICIOS - NOVOS\pedidos-app" && chcp 65001 && java -Dfile.encoding=UTF-8 -Dstdout.encoding=UTF-8 -jar target\pedidos-app-1.0-SNAPSHOT.jar"

@@ -89,6 +89,30 @@ public class ProdutoDaoImpl implements ProdutoDao {
     }
 
     @Override
+    public Produto atualizar(Produto produto) {
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement("UPDATE produto SET nome = ?, preco = ? WHERE id = ?");
+            preparedStatement.setString(1, produto.getNome());
+            preparedStatement.setDouble(2, produto.getPreco());
+            preparedStatement.setInt(3,produto.getId());
+
+            int  rowsnAffected = preparedStatement.executeUpdate();
+
+            if (rowsnAffected > 0 ){
+
+            }else {
+                throw new ConexaoException("Falha ao atualizar produto com id " + produto.getId() + " — nenhuma linha afetada");
+            }
+        } catch (SQLException exception) {
+            throw new ConexaoException(exception.getMessage());
+        } finally {
+            ConexaoDB.closeStatement(preparedStatement);
+        }
+        return produto;
+    }
+
+    @Override
     public Produto atualizarEstoque(int produtoId, int quantidade) {
         PreparedStatement preparedStatement = null;
         try {
@@ -103,9 +127,9 @@ public class ProdutoDaoImpl implements ProdutoDao {
             } else {
                 throw new ConexaoException("Falha ao atualizar estoque do produto com id " + produtoId + " — nenhuma linha afetada");
             }
-        }catch (SQLException exception){
+        } catch (SQLException exception) {
             throw new ConexaoException(exception.getMessage());
-        }finally {
+        } finally {
             ConexaoDB.closeStatement(preparedStatement);
         }
         return buscarPorId(produtoId);

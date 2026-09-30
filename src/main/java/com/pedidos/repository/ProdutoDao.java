@@ -8,6 +8,8 @@ public interface ProdutoDao {
 
     Produto buscarPorId(int id);
 
+    Produto atualizar(Produto produto);
+
     Produto atualizarEstoque(int produtoId, int quantidade);
 
     void deletar(int id);
