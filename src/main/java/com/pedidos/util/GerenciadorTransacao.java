@@ -16,7 +16,7 @@ public class GerenciadorTransacao {
             connection.setAutoCommit(false);
             acao.run();
             connection.commit();
-        } catch (SQLException exception) {
+        } catch (Exception exception) {
             try {
                 connection.rollback();
             } catch (SQLException e2) {

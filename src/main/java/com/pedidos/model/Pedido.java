@@ -49,7 +49,7 @@ public class Pedido {
 
     public void adicionarItem(ItemPedido item){
         if (item == null) {
-            throw new DadoInvalidoException("...");
+            throw new DadoInvalidoException("Item do pedido não pode ser nulo");
         }
         itens.add(item);
     }
